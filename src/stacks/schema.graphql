@@ -1,0 +1,25 @@
+type Todo @aws_cognito_user_pools {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ModelTodoConnection @aws_cognito_user_pools {
+  items: [Todo]
+}
+
+type Query {
+  getTodo(id: ID!): Todo @aws_cognito_user_pools
+  getTodos(limit: Int, nextToken: String): ModelTodoConnection
+    @aws_cognito_user_pools
+}
+
+type Mutation {
+  createTodo(name: String!, description: String!): Todo
+}
+
+type Subscription {
+  onCreateTodo: Todo @aws_subscribe(mutations: ["createTodo"])
+}
